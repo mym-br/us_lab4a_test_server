@@ -32,6 +32,7 @@
 #ifndef TESTDEVICE_H_
 #define TESTDEVICE_H_
 
+#include <random>
 #include <string>
 #include <vector>
 
@@ -81,6 +82,8 @@ private:
 	float fs_;
 	Matrix<float> rawData_;
 	std::vector<boost::int16_t> signalBuffer_;
+	std::minstd_rand prngEngine_;
+	std::uniform_real_distribution<float> prngDist_;
 };
 
 } // namespace Lab

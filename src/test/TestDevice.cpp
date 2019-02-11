@@ -44,6 +44,7 @@
 #define MAX_SAMPLE_VALUE (2047)
 #define MIN_SAMPLE_VALUE (-2048)
 #define SCALE (0.5f)
+#define NOISE_LEVEL (0.005f)
 
 
 
@@ -53,6 +54,8 @@ TestDevice::TestDevice(const std::string& dataFile, const std::string& datasetNa
 		: numActiveRxElem_()
 		, signalLength_()
 		, fs_()
+		, prngEngine_()
+		, prngDist_(NOISE_LEVEL * MIN_SAMPLE_VALUE, NOISE_LEVEL * MAX_SAMPLE_VALUE)
 {
 	LOG_DEBUG << "TestDevice()";
 	LOG_DEBUG << "dataFile=" << dataFile;
@@ -80,8 +83,7 @@ TestDevice::getSignal()
 	auto endSrcIter = rawData_.end();
 	auto destIter = signalBuffer_.begin();
 	while (srcIter != endSrcIter) {
-		//TODO: Add noise.
-		*destIter = static_cast<boost::int16_t>(std::round(*srcIter));
+		*destIter = static_cast<boost::int16_t>(std::round(*srcIter)) + prngDist_(prngEngine_);
 		++srcIter;
 		++destIter;
 	}
