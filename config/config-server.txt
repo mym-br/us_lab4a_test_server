@@ -1,0 +1,4 @@
+
+data_file = ../us_lab4a/project/simulated_3d_single_virtual_source-imasonic_0.5mhz_64elem/saved_acquisition/0000/signals-base0016.h5
+
+dataset_name = signal
