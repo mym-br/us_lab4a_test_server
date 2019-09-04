@@ -64,7 +64,7 @@ private:
 
 	void handleAccept(const boost::system::error_code& error);
 
-	boost::asio::io_service ioService_;
+	boost::asio::io_context ioContext_;
 	boost::asio::ip::tcp::acceptor acceptor_;
 	boost::asio::ip::tcp::socket socket_;
 	AcqDevice& acqDevice_;
@@ -76,9 +76,9 @@ private:
  */
 template<typename AcqDevice>
 ArrayAcqServer<AcqDevice>::ArrayAcqServer(unsigned short portNumber, AcqDevice& acqDevice)
-		: ioService_()
-		, acceptor_(ioService_)
-		, socket_(ioService_)
+		: ioContext_()
+		, acceptor_(ioContext_)
+		, socket_(ioContext_)
 		, acqDevice_(acqDevice)
 		, protocol_(acqDevice_)
 {
@@ -119,7 +119,7 @@ ArrayAcqServer<AcqDevice>::exec()
 	acceptor_.async_accept(
 			socket_,
 			boost::bind(&ArrayAcqServer<AcqDevice>::handleAccept, this, boost::asio::placeholders::error));
-	ioService_.run();
+	ioContext_.run();
 }
 
 /*******************************************************************************
@@ -145,7 +145,7 @@ template<typename AcqDevice>
 void
 ArrayAcqServer<AcqDevice>::stop()
 {
-	ioService_.stop();
+	ioContext_.stop();
 }
 
 } // namespace Lab
