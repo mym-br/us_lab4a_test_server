@@ -9,37 +9,41 @@ TEMPLATE = app
 CONFIG += c++14 warn_on
 
 SOURCES += \
-    src/ServerThread.cpp \
     src/main.cpp \
     src/LogSyntaxHighlighter.cpp \
+    src/ServerThread.cpp \
     src/ServerWindow.cpp \
     src/test/TestDevice.cpp \
-    src/util/Log.cpp \
+    src/util/HDF5Util.cpp \
     src/util/KeyValueFileReader.cpp \
+    src/util/Log.cpp \
     src/util/ParameterMap.cpp \
-    src/util/HDF5Util.cpp
+    src/external/lzf/lzf_c.c \
+    src/external/lzf/lzf_d.c \
+    src/external/lzf/lzf_filter.c
 
 HEADERS += \
-    src/ServerThread.h \
-    src/RawBuffer.h \
-    src/LogSyntaxHighlighter.h \
-    src/ArrayAcqServerProtocol.h \
-    src/ArrayAcqServer.h \
     src/ArrayAcqProtocol.h \
+    src/ArrayAcqServer.h \
+    src/ArrayAcqServerProtocol.h \
+    src/LogSyntaxHighlighter.h \
+    src/RawBuffer.h \
+    src/ServerThread.h \
     src/ServerWindow.h \
     src/test/TestDevice.h \
-    src/util/Log.h \
     src/util/Exception.h \
-    src/util/Util.h \
-    src/util/ParameterMap.h \
-    src/util/KeyValueFileReader.h \
     src/util/HDF5Util.h \
-    src/util/Matrix.h
+    src/util/KeyValueFileReader.h \
+    src/util/Log.h \
+    src/util/Matrix.h \
+    src/util/ParameterMap.h \
+    src/util/Util.h \
+    src/external/lzf/lzf.h \
+    src/external/lzf/lzfP.h \
+    src/external/lzf/lzf_filter.h
 
 FORMS += \
     ui/ServerWindow.ui
-
-INCLUDEPATH += src src/test src/util
 
 LIBS += -lboost_system \
     -lhdf5_cpp
@@ -52,7 +56,19 @@ exists(/usr/include/hdf5/serial) {
     LIBS += -lhdf5
 }
 
-DEPENDPATH += src src/test src/util
+INCLUDEPATH += \
+    src \
+    src/test \
+    src/util \
+    src/external \
+    src/external/lzf
+
+DEPENDPATH += \
+    src \
+    src/test \
+    src/util \
+    src/external \
+    src/external/lzf
 
 QMAKE_CXXFLAGS_DEBUG = -march=native -O0 -g
 QMAKE_CXXFLAGS_RELEASE = -march=native -O3

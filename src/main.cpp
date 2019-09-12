@@ -34,6 +34,7 @@
 
 #include <QApplication>
 
+#include "lzf_filter.h"
 #include "ParameterMap.h"
 #include "ServerWindow.h"
 
@@ -44,7 +45,12 @@
 int main(int argc, char *argv[])
 {
 	if (argc != 2) {
-		std::cout << "Usage: " << argv[0] << " config_dir" << std::endl;
+		std::cerr << "Usage: " << argv[0] << " config_dir" << std::endl;
+		return EXIT_FAILURE;
+	}
+
+	if (register_lzf() < 0) {
+		std::cerr << "Could not register the LZF filter (HDF5)." << std::endl;
 		return EXIT_FAILURE;
 	}
 
