@@ -49,16 +49,16 @@ namespace HDF5Util {
 using namespace H5;
 #endif
 
-template<typename FloatType> void resize(Matrix<FloatType>& container, hsize_t n1, hsize_t n2);
-template<typename FloatType> FloatType* getBeginPtr(Matrix<FloatType>& container);
+template<typename TFloat> void resize(Matrix<TFloat>& container, hsize_t n1, hsize_t n2);
+template<typename TFloat> TFloat* getBeginPtr(Matrix<TFloat>& container);
 template<typename T> void load2(const std::string& filePath, const std::string& dataSetName, T& container);
 template<typename T> PredType hdf5MemoryType();
 
 
 
-template<typename FloatType>
+template<typename TFloat>
 void
-resize(Matrix<FloatType>& container, hsize_t n1, hsize_t n2)
+resize(Matrix<TFloat>& container, hsize_t n1, hsize_t n2)
 {
 	if (n1 == 0) {
 		THROW_EXCEPTION(InvalidParameterException, "The first dimension (" << n1 << ") is equal to 0.");
@@ -69,9 +69,9 @@ resize(Matrix<FloatType>& container, hsize_t n1, hsize_t n2)
 	container.resize(n1, n2);
 }
 
-template<typename FloatType>
-FloatType*
-getBeginPtr(Matrix<FloatType>& m)
+template<typename TFloat>
+TFloat*
+getBeginPtr(Matrix<TFloat>& m)
 {
 	return &m(0, 0);
 }
@@ -91,7 +91,7 @@ load2(const std::string& filePath, const std::string& dataSetName, T& container)
 			THROW_EXCEPTION(InvalidFileException, "The data type class in the file " << filePath << " is not floating point.");
 		}
 
-		FloatType type = dataSet.getFloatType();
+		H5::FloatType type = dataSet.getFloatType();
 		//H5std_string orderString;
 		//H5T_order_t order = type.getOrder(orderString);
 		//std::cout << orderString << std::endl;
